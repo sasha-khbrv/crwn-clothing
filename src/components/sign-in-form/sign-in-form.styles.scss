@@ -1,0 +1,20 @@
+.sign-in-container {
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+
+  h2 {
+    margin: 10px 0;
+  }
+}
+
+.sign-in-btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  & *:first-child {
+    margin-right: 12px;
+  }
+}
