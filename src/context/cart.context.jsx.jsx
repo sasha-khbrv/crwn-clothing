@@ -7,20 +7,30 @@ export const CartContext = createContext({
   cartItems: [],
   addItemToCart: () => {},
   overallAmount: 0,
+  removeItemFromCart: () => {},
+  decreaseItemQuantity: () => {},
+  totalPrice: 0,
 });
 
 export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [overallAmount, setOverallAmount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     if (cartItems.length > 0) {
-      const overall = cartItems.reduce(
-        (acc, item) => (acc = acc + item.quantity),
-        0
+      let overall = cartItems.reduce(
+        (acc, item) => {
+          acc.quantity = acc.quantity + item.quantity;
+          acc.price = acc.price + item.price * item.quantity;
+          return acc;
+        },
+        { quantity: 0, price: 0 }
       );
-      setOverallAmount(overall);
+
+      setOverallAmount(overall.quantity);
+      setTotalPrice(overall.price);
     }
   }, [cartItems]);
 
@@ -39,6 +49,23 @@ export const CartProvider = ({ children }) => {
     setCartItems(newList);
   };
 
+  const removeItemFromCart = (id) => {
+    const newList = cartItems.filter((item) => item.id !== id);
+    setCartItems(newList);
+  };
+
+  const decreaseItemQuantity = (cartItem) => {
+    if (cartItem.quantity === 1) {
+      removeItemFromCart(cartItem.id);
+      return;
+    }
+    const newList = cartItems.map((item) => {
+      if (item.id !== cartItem.id) return item;
+      return { ...item, quantity: item.quantity - 1 };
+    });
+    setCartItems(newList);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -47,6 +74,9 @@ export const CartProvider = ({ children }) => {
         cartItems,
         addItemToCart,
         overallAmount,
+        removeItemFromCart,
+        decreaseItemQuantity,
+        totalPrice,
       }}
     >
       {children}
