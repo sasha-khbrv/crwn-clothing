@@ -12,7 +12,7 @@ const DirectoryItem = ({ directory: { imageUrl, title, route } }) => {
   };
   return (
     <DirectoryItemContainer onClick={handleNavigate}>
-      <BackgroundImage imageUrl={imageUrl} />
+      <BackgroundImage $imageSrc={imageUrl} />
       <Body>
         <h2>{title}</h2>
         <p>Shop now</p>
