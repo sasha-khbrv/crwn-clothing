@@ -16,7 +16,7 @@ export const ShoppingIcon = styled(ShoppingSVG)`
   height: 24px;
 `;
 
-export const CartCount = styled.span`
+export const CartCountComponent = styled.span`
   position: absolute;
   font-size: 10px;
   font-weight: bold;
